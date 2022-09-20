@@ -48,7 +48,7 @@ USER $user
 # Install Laravel
 
 #RUN composer global config allow-plugins.kylekatarnls/update-helper true && \
-#	composer create-project --prefer-dist laravel/laravel app "5.4.*"  && \
+#	composer create-project --prefer-dist laravel/laravel blog "5.4.*"  && \
 #	cp .env.example .env
 
 # Composer
