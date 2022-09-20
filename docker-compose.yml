@@ -1,0 +1,59 @@
+version: "3.7"
+services:
+  app:
+      build:
+        args:
+          user: sammy
+          uid: 1000
+          php_ver: php5.6
+        context: ./
+        dockerfile: Dockerfile
+      image: laravel
+      container_name: laravel-app
+      ports:
+        - 80:80
+      # depends_on:
+      #   - apache
+      #   - db
+      restart: unless-stopped
+      working_dir: /var/www/html
+      volumes:
+        - ./:/var/www/html
+        - ./docker-compose/apache/apache2.conf:/etc/apache2/apache2.conf
+      networks:
+        - laravel
+
+  db:
+    image: mysql:5.7
+    ports:
+      - '${FORWARD_DB_PORT:-3306}:3306'
+    container_name: laravel-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - laravel
+
+  # apache:
+  #   image: httpd:2.4
+  #   container_name: laravel-apache
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8000:80
+  #   volumes:
+  #     - ./:/var/www
+  #     - ./docker-compose/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
+  #   networks:
+  #     - laravel
+
+
+networks:
+  laravel:
+    driver: bridge
