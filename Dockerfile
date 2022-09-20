@@ -18,9 +18,9 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
-#	build-essential libpng-dev
-	
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+    build-essential libpng-dev
+
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 
 RUN apt-get update && apt-get install -y nodejs npm
 
